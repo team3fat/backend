@@ -1,0 +1,4 @@
+Django==1.11.17
+djangorestframework==3.9.2
+pysqlite==2.8.3
+pytz==2018.7
