@@ -31,7 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'diquecito',
     'api',
+    'rest_framework',
 
 ]
 
@@ -103,7 +103,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+REST_FRAMEWORK = {
+    'PAGE_SIZE': 10
 
+}
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 

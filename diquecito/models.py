@@ -14,21 +14,19 @@ class Usuario(models.Model):
     email = models.EmailField(max_length=25, blank=False, null=True)
     password = models.CharField(max_length=20, unique=True, blank=True, null=True, default=None)
 
-    def __str__(self):
-        return "%s %s" % (self.first_name, self.last_name, self.email, self.password)
-
-
+def __str__(self):
+    return "%s %s" % (self.first_name, self.last_name)
 
 
 class Post(models.Model):
 
-    usuario_id = models.ForeignKey(Usuario, default=1, on_delete=models.CASCADE, related_name='Usuario')
+    usuario_id = models.ForeignKey(Usuario, default=1, on_delete=models.CASCADE)
     title = models.CharField(max_length=20, blank=False, null=False)
     description = models.CharField(max_length=250, blank=False, null=True)
 
 
-    def __str__(self):
-        return "%s %s" % (self.title, self.description)
+def __str__(self):
+    return "%s %s" % (self.title, self.description)
 
 class Reservation(models.Model):
 
