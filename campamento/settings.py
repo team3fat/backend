@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'diquecito',
     'api',
     'rest_framework',
+    'corsheaders',
 
 ]
 
@@ -51,6 +52,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'campamento.urls'
@@ -107,8 +110,13 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10
 
 }
-# Internationalization
-# https://docs.djangoproject.com/en/1.11/topics/i18n/
+
+CORS_ORIGIN_WHITELIST = (
+    'localhost:3000'
+)
+
+
+
 
 LANGUAGE_CODE = 'en-us'
 
