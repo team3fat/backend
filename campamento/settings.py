@@ -114,11 +114,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
-    'PAGE_SIZE': 10,
 }
 
 CORS_ORIGIN_WHITELIST = (
-    'localhost:3000'
+    'https://localhost:3000',
 )
 
 

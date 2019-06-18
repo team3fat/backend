@@ -1,9 +1,9 @@
-from django.conf.urls import url
+from django.urls import path
 from diquecito.views import *
 
 urlpatterns = [
-    url(r'^Usuario/$', UsuarioList.as_view(), name="Usuario"),
-    url(r'^Post/$', PostList.as_view(), name="Post"),
-    url(r'^Reservation/$', ReservationList.as_view(), name="Reservation"),
-    url(r'^Qualification/$', QualificationList.as_view(), name="Qualification")
+    path('usuario/', UsuarioList.as_view()),
+    path('post/', PostList.as_view()),
+    path('reservation/', ReservationList.as_view()),
+    path('qualification/', QualificationList.as_view())
 ]
