@@ -51,3 +51,12 @@ class Qualification(models.Model):
         (5, "five"),
     )
     vote_choices = models.IntegerField(unique=True, blank=True, null=True, default=1, choices=VOTE_CHOICES)
+
+
+class UserProfileInfo(models.Model):
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
+    portfolio_site = models.URLField(blank=True)
+    profile_pic = models.ImageField(upload_to='profile_pics',blank=True)
+
+    def __str__(self):
+        return self.user.username

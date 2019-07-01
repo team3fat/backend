@@ -2,6 +2,8 @@ from diquecito.models import Usuario, Post, Reservation, Qualification
 from diquecito.serializers import UsuarioSerializer, PostSerializer, ReservationSerializer, QualificationSerializer
 from rest_framework import generics
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect, HttpResponse
 
 # Create your views here.
 
