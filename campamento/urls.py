@@ -16,11 +16,15 @@ Including another URLconf
 from django.urls import path, include
 from django.contrib import admin
 from django.conf import settings
+from django.views.generic.base import TemplateView
 from rest_framework.authtoken import views
+<<<<<<< HEAD
 from api import urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('diquecito/', include(urls)),
     path('diquecito/auth', include('rest_framework.urls', namespace="rest_framework")),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('', TemplateView.as_view(template_name='home.html'), name='home'),
 ]

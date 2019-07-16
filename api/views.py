@@ -9,6 +9,9 @@ from rest_framework.response import Response
 from rest_framework.authentication import get_authorization_header, BaseAuthentication
 from rest_framework import generics
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse_lazy
+from django.views import generic
 from diquecito.models import Usuario, Post, Reservation, Qualification
 from .serializers import UsuarioSerializer, PostSerializer, ReservationSerializer, QualificationSerializer
 
@@ -157,3 +160,8 @@ class TokenAuthentication(BaseAuthentication):
 
     def authenticate_header(self, request):
         return 'Token'
+
+class SignUp(generic.CreateView):
+    form_class = UserCreationForm
+    success_url = reverse_lazy('login')
+    template_name = 'signup.html'
