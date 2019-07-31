@@ -3,7 +3,6 @@
 ***
 # Tech Stack
 
-***
 - Python==3.6
 - Django==2.2.3
 - django-cors-headers==3.0.2
