@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from api.views import UsuarioList, PostList, ReservationList, QualificationList, Login, TokenAuthentication, SignUp
 
 urlpatterns = [
     path('usuario/', UsuarioList.as_view()),
@@ -8,5 +8,5 @@ urlpatterns = [
     path('post/', PostList.as_view()),
     path('reservation/', ReservationList.as_view()),
     path('qualification/', QualificationList.as_view()),
-    path('signup/', views.SignUp.as_view(), name='signup'),
+    path('signup/', SignUp.as_view(), name='signup'),
 ]

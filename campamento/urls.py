@@ -18,7 +18,6 @@ from django.contrib import admin
 from django.conf import settings
 from django.views.generic.base import TemplateView
 from rest_framework.authtoken import views
-<<<<<<< HEAD
 from api import urls
 
 urlpatterns = [
