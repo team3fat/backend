@@ -174,22 +174,27 @@ class DiasDisponibles():
         self.dias.append(dia)
 
 class Calendario(generics.ListCreateAPIView):
+    queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
 
-    def get_queryset(self):
-        reservations = ReservationList.get_object()
-        return transform(reservas)
-
     def get_object(self):
-        return self
+        queryset = self.get_queryset()
+        obj = get_object_or_404(
+            queryset,
+            pk=self.kwargs['pk'],
+        )
+        return obj
 
-    def transform(reservas):
+    def transform(self, reservas):
         diasDisponibles = DiasDisponibles()
         for reserva in reservas:
             reserva.comienzo = null
             #diasDisponibles.append(reserva.comienzo)
 
-        return reservas
+        return diasDisponibles
+
+    def get_queryset(self):
+        return self.transform(self.queryset)
 
 
 
