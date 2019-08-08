@@ -14,7 +14,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 from diquecito.models import Usuario, Post, Reservation, Qualification
 from .serializers import UsuarioSerializer, PostSerializer, ReservationSerializer, QualificationSerializer
-
+import calendar
 # Create your views here.
 
 @api_view(['GET'])
@@ -166,7 +166,34 @@ class SignUp(generic.CreateView):
     success_url = reverse_lazy('login')
     template_name = 'signup.html'
 
-class RetornoMes():
+class DiasDisponibles():
+    def __init__(self):
+        self.dias = ['pepe']
+
+    def agregar_dias(self, dia):
+        self.dias.append(dia)
+
+class Calendario(generics.ListCreateAPIView):
+    serializer_class = ReservationSerializer
+
+    def get_queryset(self):
+        reservations = ReservationList.get_object()
+        return transform(reservas)
+
+    def get_object(self):
+        return self
+
+    def transform(reservas):
+        diasDisponibles = DiasDisponibles()
+        for reserva in reservas:
+            reserva.comienzo = null
+            #diasDisponibles.append(reserva.comienzo)
+
+        return reservas
 
 
 
+
+#class DiaDisponible():
+    #fecha
+    #estado
