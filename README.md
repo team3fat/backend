@@ -116,3 +116,17 @@ el siguiente comando soluciona este problema instalando cada requerimiento indiv
 #### DTE (**D**iagrama de **T**ranscision de **E**stados)
 
 [dte](https://docs.google.com/drawings/d/1BsCM58zch_OiY_SmOd51n7iqg-9ZTkE44gvu2-WZSHM/edit)
+
+### Tecnologias Soportadas
+
+#### Browsers
+
+- Microsoft Edge 44
+- Google Chrome 76
+- Mozilla Firefox
+- Internet Explorer
+
+#### Dispositivos
+
+- PC (Laptop, Escritorio)
+- Teléfono Móvil
