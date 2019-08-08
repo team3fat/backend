@@ -15,7 +15,7 @@ class PostSerializer(serializers.ModelSerializer):
 class ReservationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reservation
-        fields = ('duration', 'cost', 'payment_method_choices')
+        fields = ('comienzo', 'final', 'estado')
 
 class QualificationSerializer(serializers.ModelSerializer):
     class Meta:
