@@ -106,3 +106,13 @@ el siguiente comando soluciona este problema instalando cada requerimiento indiv
 - Master
 - Develop
 - Feature (per/User Story)
+
+### Diagramas
+
+#### UML
+
+[uml](https://docs.google.com/drawings/d/1XqeEOYqTLx5LdtMM8u_Mby8EgA3s9WIHtVM6l_oG1R4/edit)
+
+#### DTE (**D**iagrama de **T**ranscision de **E**stados)
+
+[dte](https://docs.google.com/drawings/d/1BsCM58zch_OiY_SmOd51n7iqg-9ZTkE44gvu2-WZSHM/edit)
