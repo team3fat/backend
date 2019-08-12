@@ -7,13 +7,13 @@ from rest_framework import views, exceptions
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.authentication import get_authorization_header, BaseAuthentication
-from rest_framework import rest_generics
+from rest_framework import generics as rest_generics
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
-from django.views import generics
+from django.views import generic as generics
 from diquecito.models import Usuario, Post, Reservation, Qualification
-from .serializers import UsuarioSerializer, PostSerializer, ReservationSerializer, QualificationSerializer
+from .serializers import UsuarioSerializer, PostSerializer, ReservationSerializer, QualificationSerializer, CalendarioSerializer
 
 # Create your views here.
 
@@ -211,17 +211,26 @@ class Calendario(rest_generics.ListCreateAPIView):
 # https://www.django-rest-framework.org/api-guide/generic-views/#genericapiview (Documentacion de APIView de Rest)
 
 class Calendario(rest_generics.ListAPIView):
-    # Retorna el queryset
-    def get_queryset(self):
-        queryset = Reservation.objects.all()
-        return queryset
+    
+    queryset = Reservation.objects.all()
+    serializer_class = CalendarioSerializer
 
-    # Retorna una instancia de un objeto
-    def get_object(self):
+    """def get_object(self):
         queryset = self.get_queryset()
-        context = {}
-        return algo
+        obj = get_object_or_404(
+            queryset,
+            pk=self.kwargs['pk'],
+        )
+        return obj"""
 
-    # Retorna la clase que se debera usar para el serializer
-    def get_serializer_class(self):
-        return ReservationSerializer
+    def crearDias():
+        calendario = {'dias':[]}
+        calendario_json = json.dumps(calendario)
+        """for i in list(range(2)):
+            dia = json.dumps({'fecha':"01/02/2019", 'estado':"RESERVADO"})
+            calendario.dias.append(dia)"""
+
+        return calendario_json
+
+    def get_object(self):
+        return crearDias()

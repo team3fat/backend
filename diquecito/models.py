@@ -60,3 +60,4 @@ class Qualification(models.Model):
 
     def __str__(self):
         return '{}, {}'.format(self.post_id, self.vote_choices)
+
