@@ -7,14 +7,14 @@ from rest_framework import views, exceptions
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.authentication import get_authorization_header, BaseAuthentication
-from rest_framework import generics
+from rest_framework import rest_generics
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import generics
 from diquecito.models import Usuario, Post, Reservation, Qualification
 from .serializers import UsuarioSerializer, PostSerializer, ReservationSerializer, QualificationSerializer
-import calendar
+
 # Create your views here.
 
 @api_view(['GET'])
@@ -23,7 +23,7 @@ def current_user(request):
     serializer = UsuarioSerializer(request.user)
     return Response(serializer.data)
 
-class UsuarioList(generics.ListCreateAPIView):
+class UsuarioList(rest_generics.ListCreateAPIView):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
 
@@ -35,7 +35,7 @@ class UsuarioList(generics.ListCreateAPIView):
         )
         return obj
 
-class PostList(generics.ListCreateAPIView):
+class PostList(rest_generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
@@ -47,7 +47,7 @@ class PostList(generics.ListCreateAPIView):
         )
         return obj
 
-class ReservationList(generics.ListCreateAPIView):
+class ReservationList(rest_generics.ListCreateAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
 
@@ -59,7 +59,7 @@ class ReservationList(generics.ListCreateAPIView):
         )
         return obj
 
-class QualificationList(generics.ListCreateAPIView):
+class QualificationList(rest_generics.ListCreateAPIView):
     queryset = Qualification.objects.all()
     serializer_class = QualificationSerializer
 
@@ -161,11 +161,14 @@ class TokenAuthentication(BaseAuthentication):
     def authenticate_header(self, request):
         return 'Token'
 
-class SignUp(generic.CreateView):
+class SignUp(generics.CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'signup.html'
 
+# View que devolvera la lista de reservaciones
+
+"""
 class DiasDisponibles():
     def __init__(self):
         self.dias = ['pepe']
@@ -173,7 +176,7 @@ class DiasDisponibles():
     def agregar_dias(self, dia):
         self.dias.append(dia)
 
-class Calendario(generics.ListCreateAPIView):
+class Calendario(rest_generics.ListCreateAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
 
@@ -202,3 +205,23 @@ class Calendario(generics.ListCreateAPIView):
 #class DiaDisponible():
     #fecha
     #estado
+
+"""
+
+# https://www.django-rest-framework.org/api-guide/generic-views/#genericapiview (Documentacion de APIView de Rest)
+
+class Calendario(rest_generics.ListAPIView):
+    # Retorna el queryset
+    def get_queryset(self):
+        queryset = Reservation.objects.all()
+        return queryset
+
+    # Retorna una instancia de un objeto
+    def get_object(self):
+        queryset = self.get_queryset()
+        context = {}
+        return algo
+
+    # Retorna la clase que se debera usar para el serializer
+    def get_serializer_class(self):
+        return ReservationSerializer
