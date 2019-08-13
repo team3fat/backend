@@ -34,8 +34,31 @@ class CalendarioSerializer(serializers.Serializer):
 """
 
 class CalendarioSerializer(serializers.Serializer):
-    fecha = serializers.DateTimeField()
-    estado = serializers.CharField(max_length=20)
+    dias = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Reservation
+        #TODO ¿fields????
+
+    def get_dias(self, obj):
+        # TODO logica que toma lista de objetos "reservation" del modelo y retorna
+        """" [
+        {
+            "fecha": "13/12/2019",
+            "estado": "disponible"
+        },
+        {
+            "fecha": "14/12/2019",
+            "estado": "reservado"
+        }
+    ]"""
+
+        # def crearDias(self):
+        #     calendario = {'dias': []}
+        #     # calendario_json = json.dumps(calendario)
+        #     """for i in list(range(2)):
+        #         dia = json.dumps({'fecha':"01/02/2019", 'estado':"RESERVADO"})
+        #         calendario.dias.append(dia)"""
 
 # Uso:
 # Serializacion:

@@ -210,42 +210,31 @@ class Calendario(rest_generics.ListCreateAPIView):
 
 # Custom mixin (Para ver varios url kwargs)
 
-class MultipleFieldLookupMixin(object):
+class MesYAnioLookupMixin(object):
     def get_object(self):
         queryset = self.get_queryset()             # Get the base queryset
         filter = {}
+
+        # TODO: creando filtro en base a querys "mes" y "anio" ==> date(mm/aaaa)
+        # Controlar que esten presentes ambos atributos mes y anio, si falta alguno se retorna 400
         for field in self.lookup_url_kwarg:
             if self.kwargs[field]:  # Ignore empty fields.
                 filter[field] = self.kwargs[field]
-        obj = get_object_or_404(queryset, **filter)  # Lookup the object
-        self.check_object_permissions(self.request, obj)
+
+
+        # TODO: filtrar en base a la date del filtro, ignorando los dias y considerando "date<=final" && "date>=inicio"
+        #obj = get_list_or_404(queryset, **filter)  # Lookup the object
+        #self.check_object_permissions(self.request, obj)
+
+        # Return deberia ser una lista con todas las reservation que tengan "inicio" y/o "final" dentro del mes "date"
         return obj
 
 # https://www.django-rest-framework.org/api-guide/generic-views/#genericapiview (Documentacion de APIView de Rest)
 
-class Calendario(MultipleFieldLookupMixin, rest_generics.ListAPIView):
+class Calendario(MesYAnioLookupMixin, rest_generics.ListAPIView):
     
     queryset = Reservation.objects.all()
     serializer_class = CalendarioSerializer
     lookup_url_kwarg = ['mes', 'anio']
 
-    """def get_object(self):
-        queryset = self.get_queryset()
-        obj = get_object_or_404(
-            queryset,
-            pk=self.kwargs['pk'],
-        )
-        return obj"""
 
-    def crearDias(self):
-        calendario = {'dias': []}
-        # calendario_json = json.dumps(calendario)
-        """for i in list(range(2)):
-            dia = json.dumps({'fecha':"01/02/2019", 'estado':"RESERVADO"})
-            calendario.dias.append(dia)"""
-
-        return calendario  #calendario_json
-
-    def get(self, request):
-        serializer = CalendarioSerializer(data=self.crearDias())
-        return Response(serializer.data, status=200)
