@@ -63,7 +63,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'djreservation.middleware.ReservationMiddleware',
 ]
 
 ROOT_URLCONF = 'campamento.urls'
