@@ -9,7 +9,5 @@ urlpatterns = [
     path('reservation/', ReservationList.as_view()),
     path('qualification/', QualificationList.as_view()),
     path('signup/', SignUp.as_view(), name='signup'),
-    path('calendario/', Calendario, name='calendario'),
-    
-
+    path('calendario?mes=<int:mes>&anio=<int:anio>/', Calendario.as_view(), name='calendario'),
 ]

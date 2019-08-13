@@ -208,12 +208,26 @@ class Calendario(rest_generics.ListCreateAPIView):
 
 """
 
+# Custom mixin (Para ver varios url kwargs)
+
+class MultipleFieldLookupMixin(object):
+    def get_object(self):
+        queryset = self.get_queryset()             # Get the base queryset
+        filter = {}
+        for field in self.lookup_url_kwarg:
+            if self.kwargs[field]:  # Ignore empty fields.
+                filter[field] = self.kwargs[field]
+        obj = get_object_or_404(queryset, **filter)  # Lookup the object
+        self.check_object_permissions(self.request, obj)
+        return obj
+
 # https://www.django-rest-framework.org/api-guide/generic-views/#genericapiview (Documentacion de APIView de Rest)
 
-class Calendario(rest_generics.ListAPIView):
+class Calendario(MultipleFieldLookupMixin, rest_generics.ListAPIView):
     
     queryset = Reservation.objects.all()
     serializer_class = CalendarioSerializer
+    lookup_url_kwarg = ['mes', 'anio']
 
     """def get_object(self):
         queryset = self.get_queryset()
@@ -223,14 +237,15 @@ class Calendario(rest_generics.ListAPIView):
         )
         return obj"""
 
-    def crearDias():
-        calendario = {'dias':[]}
-        calendario_json = json.dumps(calendario)
+    def crearDias(self):
+        calendario = {'dias': []}
+        # calendario_json = json.dumps(calendario)
         """for i in list(range(2)):
             dia = json.dumps({'fecha':"01/02/2019", 'estado':"RESERVADO"})
             calendario.dias.append(dia)"""
 
-        return calendario_json
+        return calendario  #calendario_json
 
-    def get_object(self):
-        return crearDias()
+    def get(self, request):
+        serializer = CalendarioSerializer(data=self.crearDias())
+        return Response(serializer.data, status=200)

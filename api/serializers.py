@@ -19,18 +19,35 @@ class ReservationSerializer(serializers.ModelSerializer):
         model = Reservation
         fields = ('comienzo', 'final', 'estado')
 
+"""
 class CalendarioSerializer(serializers.Serializer):
     def crearDias():
         calendario = {'dias':[]}
         calendario_json = json.dumps(calendario)
-        """for i in list(range(2)):
+        for i in list(range(2)):
             dia = json.dumps({'fecha':"01/02/2019", 'estado':"RESERVADO"})
-            calendario.dias.append(dia)"""
+            calendario.dias.append(dia)
 
         return calendario
 
     dias = crearDias()
+"""
 
+class CalendarioSerializer(serializers.Serializer):
+    fecha = serializers.DateTimeField()
+    estado = serializers.CharField(max_length=20)
+
+# Uso:
+# Serializacion:
+# from rest_framework.renderers import JSONRenderer
+# serializer = CalendarioSerializer(calendario)
+# json = JSONRenderer().render(serializer.data)
+# Deserializacion:
+# import io
+# from rest_framework.parsers import JSONParser
+# stream = io.BytesIO(json)
+# data = JSONParser().parse(stream)
+# serializer = CommentSerializer(data=data)
 
 class QualificationSerializer(serializers.ModelSerializer):
     class Meta:
