@@ -57,6 +57,7 @@ class ReservationFilter(filters.FilterSet):
         fields = {
             'comienzo': ['icontains']
         }
+
 class ReservationList(rest_generics.ListCreateAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
@@ -179,17 +180,10 @@ class SignUp(generics.CreateView):
 
 # View que devolvera la lista de reservaciones
 
-"""
-class DiasDisponibles():
-    def __init__(self):
-        self.dias = ['pepe']
-
-    def agregar_dias(self, dia):
-        self.dias.append(dia)
-
 class Calendario(rest_generics.ListCreateAPIView):
     queryset = Reservation.objects.all()
-    serializer_class = ReservationSerializer
+    serializer_class = CalendarioSerializer
+    filterset_class = ReservationFilter
 
     def get_object(self):
         queryset = self.get_queryset()
@@ -198,54 +192,3 @@ class Calendario(rest_generics.ListCreateAPIView):
             pk=self.kwargs['pk'],
         )
         return obj
-
-    def transform(self, reservas):
-        diasDisponibles = DiasDisponibles()
-        for reserva in reservas:
-            reserva.comienzo = null
-            #diasDisponibles.append(reserva.comienzo)
-
-        return diasDisponibles
-
-    def get_queryset(self):
-        return self.transform(self.queryset)
-
-
-
-
-#class DiaDisponible():
-    #fecha
-    #estado
-
-"""
-
-# Custom mixin (Para ver varios url kwargs)
-
-class MesYAnioLookupMixin(object):
-    def get_object(self):
-        queryset = self.get_queryset()             # Get the base queryset
-        filter = {}
-
-        # TODO: creando filtro en base a querys "mes" y "anio" ==> date(mm/aaaa)
-        # Controlar que esten presentes ambos atributos mes y anio, si falta alguno se retorna 400
-        for field in self.lookup_url_kwarg:
-            if self.kwargs[field]:  # Ignore empty fields.
-                filter[field] = self.kwargs[field]
-
-
-        # TODO: filtrar en base a la date del filtro, ignorando los dias y considerando "date<=final" && "date>=inicio"
-        #obj = get_list_or_404(queryset, **filter)  # Lookup the object
-        #self.check_object_permissions(self.request, obj)
-
-        # Return deberia ser una lista con todas las reservation que tengan "inicio" y/o "final" dentro del mes "date"
-        return obj
-
-# https://www.django-rest-framework.org/api-guide/generic-views/#genericapiview (Documentacion de APIView de Rest)
-
-class Calendario(MesYAnioLookupMixin, rest_generics.ListAPIView):
-    
-    queryset = Reservation.objects.all()
-    serializer_class = CalendarioSerializer
-    lookup_url_kwarg = ['mes', 'anio']
-
-
