@@ -43,6 +43,7 @@ class CalendarioSerializer(serializers.Serializer):
     def get_dias(self, obj):
         # TODO logica que toma lista de objetos "reservation" del modelo y retorna
         """" [
+            
         {
             "fecha": "13/12/2019",
             "estado": "disponible"
@@ -52,7 +53,11 @@ class CalendarioSerializer(serializers.Serializer):
             "estado": "reservado"
         }
     ]"""
-
+    """
+            start_date = datetime.date(2005, 1, 1)
+            end_date = datetime.date(2005, 3, 31)
+            Entry.objects.filter(pub_date__range=(start_date, end_date))
+    """
         # def crearDias(self):
         #     calendario = {'dias': []}
         #     # calendario_json = json.dumps(calendario)

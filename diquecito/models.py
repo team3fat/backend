@@ -36,10 +36,9 @@ class Reservation(models.Model):
     
     ESTADO = [
         ('PEDIDO', 'Pedido'),
-        ('DISPONIBLE', 'Disponible'),
         ('RESERVADO', 'Reservado'),
     ]
-    estado = models.CharField(max_length=10, choices=ESTADO, default='DISPONIBLE')
+    estado = models.CharField(max_length=10, choices=ESTADO, default='PEDIDO')
 
     def __str__(self):
         return '{}, {}, {}'.format(self.comienzo, self.final, self.estado)
