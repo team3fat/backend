@@ -14,7 +14,9 @@ from django.urls import reverse_lazy
 from django.views import generic as generics
 from diquecito.models import Usuario, Post, Reservation, Qualification
 from .serializers import UsuarioSerializer, PostSerializer, ReservationSerializer, QualificationSerializer, CalendarioSerializer
-
+from django_filters import rest_framework as filters
+from django.utils import timezone
+from datetime import datetime
 # Create your views here.
 
 @api_view(['GET'])
@@ -47,9 +49,18 @@ class PostList(rest_generics.ListCreateAPIView):
         )
         return obj
 
+class ReservationFilter(filters.FilterSet):
+    final = filters.DateFilter(lookup_expr='icontains')
+
+    class Meta:
+        model = Reservation
+        fields = {
+            'comienzo': ['icontains']
+        }
 class ReservationList(rest_generics.ListCreateAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
+    filterset_class = ReservationFilter
 
     def get_object(self):
         queryset = self.get_queryset()
