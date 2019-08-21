@@ -19,7 +19,7 @@ class ReservationSerializer(serializers.ModelSerializer):
         model = Reservation
         fields = ('comienzo', 'final', 'estado')
 
-class CalendarioSerializer(serializers.Serializer):
+class CalendarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reservation
         fields = ('comienzo', 'final', 'estado')
