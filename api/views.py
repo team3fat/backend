@@ -50,17 +50,28 @@ class PostList(rest_generics.ListCreateAPIView):
         return obj
 
 class ReservationFilter(filters.FilterSet):
-    final = filters.DateFilter(lookup_expr='icontains')
-
-    class Meta:
-        model = Reservation
-        fields = {
-            'comienzo': ['icontains']
-        }
+    comienzo = filters.DateFilter()
+    final = filters.DateFilter()
+        
 
 class ReservationList(rest_generics.ListCreateAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
+    filterset_class = ReservationFilter
+
+    def get_object(self):
+        queryset = self.get_queryset()
+        obj = get_object_or_404(
+            queryset,
+            pk=self.kwargs['pk'],
+        )
+        return obj
+
+# View que devolvera la lista de reservaciones
+
+class Calendario(rest_generics.ListCreateAPIView):
+    queryset = Reservation.objects.all()
+    serializer_class = CalendarioSerializer
     filterset_class = ReservationFilter
 
     def get_object(self):
@@ -178,17 +189,3 @@ class SignUp(generics.CreateView):
     success_url = reverse_lazy('login')
     template_name = 'signup.html'
 
-# View que devolvera la lista de reservaciones
-
-class Calendario(rest_generics.ListCreateAPIView):
-    queryset = Reservation.objects.all()
-    serializer_class = CalendarioSerializer
-    filterset_class = ReservationFilter
-
-    def get_object(self):
-        queryset = self.get_queryset()
-        obj = get_object_or_404(
-            queryset,
-            pk=self.kwargs['pk'],
-        )
-        return obj
