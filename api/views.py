@@ -17,6 +17,10 @@ from .serializers import UsuarioSerializer, PostSerializer, ReservationSerialize
 from django_filters import rest_framework as filters
 from django.utils import timezone
 from datetime import datetime
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+import django_filters.rest_framework
+
 # Create your views here.
 
 @api_view(['GET'])
@@ -49,15 +53,13 @@ class PostList(rest_generics.ListCreateAPIView):
         )
         return obj
 
-class ReservationFilter(filters.FilterSet):
-    comienzo = filters.DateFilter()
-    final = filters.DateFilter()
-        
 
+
+    
 class ReservationList(rest_generics.ListCreateAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
-    filterset_class = ReservationFilter
+
 
     def get_object(self):
         queryset = self.get_queryset()
@@ -72,7 +74,8 @@ class ReservationList(rest_generics.ListCreateAPIView):
 class Calendario(rest_generics.ListCreateAPIView):
     queryset = Reservation.objects.all()
     serializer_class = CalendarioSerializer
-    filterset_class = ReservationFilter
+    filter_backends = [filters.SearchFilter]
+    search_fields = ('comienzo', 'final')
 
     def get_object(self):
         queryset = self.get_queryset()
@@ -81,6 +84,7 @@ class Calendario(rest_generics.ListCreateAPIView):
             pk=self.kwargs['pk'],
         )
         return obj
+
 
 class QualificationList(rest_generics.ListCreateAPIView):
     queryset = Qualification.objects.all()
