@@ -75,7 +75,7 @@ class Calendario(rest_generics.ListCreateAPIView):
     queryset = Reservation.objects.all()
     serializer_class = CalendarioSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ('comienzo', 'final')
+    search_fields = ['$comienzo', '$final']
 
     def get_object(self):
         queryset = self.get_queryset()
