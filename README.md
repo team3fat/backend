@@ -66,6 +66,11 @@ que correr
 
 `python3 -m venv [nombre de directorio del entorno virtual]`
 
+Para activar el entorno virtual, hay que ejecutar el siguiente comando, estando ubicado fuera de la carpeta creada
+por el comando anterior:
+
+`source [nombre de directorio del entorno virtual]/bin/activate`
+
 ### Instalacion de Requerimientos
 
 `pip install requirements.txt`
