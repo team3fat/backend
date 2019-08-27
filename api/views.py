@@ -7,13 +7,19 @@ from rest_framework import views, exceptions
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.authentication import get_authorization_header, BaseAuthentication
-from rest_framework import generics
+from rest_framework import generics as rest_generics
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import generic as generics
 from diquecito.models import Usuario, Post, Reservation, Qualification
-from .serializers import UsuarioSerializer, PostSerializer, ReservationSerializer, QualificationSerializer
+from .serializers import UsuarioSerializer, PostSerializer, ReservationSerializer, QualificationSerializer, CalendarioSerializer
+from django_filters import rest_framework as filters
+from django.utils import timezone
+from datetime import datetime
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+import django_filters.rest_framework
 
 # Create your views here.
 
@@ -23,7 +29,7 @@ def current_user(request):
     serializer = UsuarioSerializer(request.user)
     return Response(serializer.data)
 
-class UsuarioList(generics.ListCreateAPIView):
+class UsuarioList(rest_generics.ListCreateAPIView):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
 
@@ -35,7 +41,7 @@ class UsuarioList(generics.ListCreateAPIView):
         )
         return obj
 
-class PostList(generics.ListCreateAPIView):
+class PostList(rest_generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
@@ -47,9 +53,13 @@ class PostList(generics.ListCreateAPIView):
         )
         return obj
 
-class ReservationList(generics.ListCreateAPIView):
+
+
+    
+class ReservationList(rest_generics.ListCreateAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
+
 
     def get_object(self):
         queryset = self.get_queryset()
@@ -59,7 +69,24 @@ class ReservationList(generics.ListCreateAPIView):
         )
         return obj
 
-class QualificationList(generics.ListCreateAPIView):
+# View que devolvera la lista de reservaciones
+
+class Calendario(rest_generics.ListCreateAPIView):
+    queryset = Reservation.objects.all()
+    serializer_class = CalendarioSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['$comienzo', '$final']
+
+    def get_object(self):
+        queryset = self.get_queryset()
+        obj = get_object_or_404(
+            queryset,
+            pk=self.kwargs['pk'],
+        )
+        return obj
+
+
+class QualificationList(rest_generics.ListCreateAPIView):
     queryset = Qualification.objects.all()
     serializer_class = QualificationSerializer
 
@@ -161,7 +188,8 @@ class TokenAuthentication(BaseAuthentication):
     def authenticate_header(self, request):
         return 'Token'
 
-class SignUp(generic.CreateView):
+class SignUp(generics.CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'signup.html'
+

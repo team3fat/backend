@@ -2,6 +2,9 @@
 from __future__ import unicode_literals
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
+from datetime import datetime
+
 
 # Create your models here.
 
@@ -28,15 +31,17 @@ class Post(models.Model):
 
 class Reservation(models.Model):
 
-    duration = models.TimeField()
-    cost = models.FloatField(null=True, blank=True)
-    PAYMENT_METHOD_CHOICES = (
-        ("MP", "Mercado Pago"),
-    )
-    payment_method_choices = models.CharField(max_length=2, choices=PAYMENT_METHOD_CHOICES)
+    comienzo = models.DateField(default=datetime.now, blank=True, null=True)
+    final = models.DateField(default=datetime.now, blank=True, null=True)
+    
+    ESTADO = [
+        ('PEDIDO', 'Pedido'),
+        ('RESERVADO', 'Reservado'),
+    ]
+    estado = models.CharField(max_length=10, choices=ESTADO, default='PEDIDO')
 
     def __str__(self):
-        return '{}, {}, {}'.format(self.duration, self.cost, self.payment_method_choices)
+        return '{}, {}, {}'.format(self.comienzo, self.final, self.estado)
 
 
 class Qualification(models.Model):
@@ -54,3 +59,4 @@ class Qualification(models.Model):
 
     def __str__(self):
         return '{}, {}'.format(self.post_id, self.vote_choices)
+
