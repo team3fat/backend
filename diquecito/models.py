@@ -31,8 +31,8 @@ class Post(models.Model):
 
 class Reservation(models.Model):
 
-    comienzo = models.DateField(default=datetime.now, blank=True, null=True)
-    final = models.DateField(default=datetime.now, blank=True, null=True)
+    comienzo = models.DateField(default=datetime.date.today, blank=True, null=True)
+    final = models.DateField(default=datetime.date.today, blank=True, null=True)
     
     ESTADO = [
         ('PEDIDO', 'Pedido'),
