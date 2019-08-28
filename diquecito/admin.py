@@ -5,9 +5,12 @@ from django.contrib import admin
 
 from .models import *
 
+# Admin de reservacion y usuarios
+""" 
 @admin.register(Reservation,Usuario)
 class ComplejoAdmin(admin.ModelAdmin):
     pass
+ """
 
 # Register your models here.
 
