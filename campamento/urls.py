@@ -18,11 +18,13 @@ from django.contrib import admin
 from django.conf import settings
 from django.views.generic.base import TemplateView
 from rest_framework.authtoken import views
+from diquecito.admin import complejo_admin_site
 from api import urls
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('complejoadmin/', complejo_admin_site.urls),
     path('diquecito/', include(urls)),
     path('diquecito/auth', include('rest_framework.urls', namespace="rest_framework")),
     path('accounts/', include('django.contrib.auth.urls')),

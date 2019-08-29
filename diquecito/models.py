@@ -18,6 +18,10 @@ class Usuario(models.Model):
     def __str__(self):
         return '{}, {}, {}, {}'.format(self.first_name, self.last_name, self.email, self.password)
 
+# Proxy de modelo Usuario para que el ComplejoAdmin pueda ver los usuarios
+class UsuarioProxy(Usuario):
+    class Meta:
+        proxy = True
 
 class Post(models.Model):
 
@@ -43,6 +47,10 @@ class Reservation(models.Model):
     def __str__(self):
         return '{}, {}, {}'.format(self.comienzo, self.final, self.estado)
 
+# Proxy de modelo Reservation para que el ComplejoAdmin pueda ver las reservaciones
+class ReservationProxy(Reservation):
+    class Meta:
+        proxy = True
 
 class Qualification(models.Model):
 
