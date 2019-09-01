@@ -35,6 +35,7 @@ class Post(models.Model):
 
 class Reservation(models.Model):
 
+    creacion = models.DateField(auto_now_add=True, null=True, blank=True)
     comienzo = models.DateField(default=datetime.now, blank=True, null=True)
     final = models.DateField(default=datetime.now, blank=True, null=True)
     

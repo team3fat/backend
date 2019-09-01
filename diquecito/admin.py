@@ -12,9 +12,33 @@ class ComplejoAdmin(admin.ModelAdmin):
     pass
  """
 
+# Modelos de Admins
+
+class ReservationAdmin(admin.ModelAdmin):
+	# Orden de listado de datos
+    list_display = ('creacion','comienzo','final','estado')
+
+    # FieldSets
+    fieldsets = (
+        (None, {'fields': ('comienzo', 'final','estado')}),
+    )
+
+# A implementar a futuro
+'''
+class ReservationAdmin(admin.ModelAdmin):
+	# Orden de listado de datos
+	list_display = ('comienzo','final','estado')
+
+	# FieldSets
+	fieldsets = (
+		(None, {'fields': ('comienzo', 'final','estado')}),
+	)
+'''
+
 # Admin sites
 
 class ComplejoAdminSite(admin.AdminSite):
+	# Textos de la pagina
     site_header = "Admin Complejo Diquecito"
     site_title = "Portal de Admin Complejo Diquecito"
     index_title = "Bienvenido al Portal de Admin Complejo Diquecito"
@@ -30,5 +54,8 @@ admin.site.register(Post)
 admin.site.register(Qualification)
 
 ## Complejo Admin Site
-complejo_admin_site.register(ReservationProxy)
-complejo_admin_site.register(UsuarioProxy)
+complejo_admin_site.register(ReservationProxy, ReservationAdmin)
+# A implementar a futuro
+'''
+complejo_admin_site.register(UsuarioProxy, UsuarioAdmin)
+'''
