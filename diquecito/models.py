@@ -42,6 +42,7 @@ class Reservation(models.Model):
     ESTADO = [
         ('PEDIDO', 'Pedido'),
         ('RESERVADO', 'Reservado'),
+        ('CANCELADO', 'Cancelado'),
     ]
     estado = models.CharField(max_length=10, choices=ESTADO, default='PEDIDO')
 
