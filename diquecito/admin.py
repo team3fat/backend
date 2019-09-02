@@ -11,10 +11,17 @@ class ReservationAdmin(admin.ModelAdmin):
 	# Orden de listado de datos
     list_display = ('creacion','comienzo','final','estado')
 
+    # Filtro
+    list_filter = ('comienzo','final','estado')
+
     # FieldSets
     fieldsets = (
         (None, {'fields': ('comienzo', 'final','estado')}),
     )
+
+    # Permisos de admin
+    def has_delete_permission(self, request, obj=None):
+        return False
 
     # Acciones de admin
     actions = ['cancelar_pedido','aceptar_pedido','resetear_pedido']
