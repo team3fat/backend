@@ -55,7 +55,7 @@ class ReservationAdmin(admin.ModelAdmin):
     aceptar_pedido.allowed_permissions = ('change',)
     resetear_pedido.allowed_permissions = ('change',)
 
-    # Nombrado de las accciones
+    # Nombre de las accciones
     cancelar_pedido.short_description = "Cancelar los pedidos seleccionados"
     aceptar_pedido.short_description = "Aceptar los pedidos seleccionados"
     resetear_pedido.short_description = "Resetear los pedidos seleccionados"

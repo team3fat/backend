@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
-from datetime import datetime
+import datetime
 
 
 # Create your models here.
@@ -36,8 +36,8 @@ class Post(models.Model):
 class Reservation(models.Model):
 
     creacion = models.DateField(auto_now_add=True, null=True, blank=True)
-    comienzo = models.DateField(default=datetime.now, blank=True, null=True)
-    final = models.DateField(default=datetime.now, blank=True, null=True)
+    comienzo = models.DateField(default=datetime.date.today, blank=True, null=True)
+    final = models.DateField(default=datetime.date.today, blank=True, null=True)
     
     ESTADO = [
         ('PEDIDO', 'Pedido'),
