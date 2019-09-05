@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
-from datetime import datetime
+import datetime
 
 
 # Create your models here.
@@ -33,11 +33,11 @@ class Post(models.Model):
         return '{}, {}, {}'.format(self.usuario_id, self.title, self.description)
 
 
-class Reservation(models.Model):
+class Reservacion(models.Model):
 
     creacion = models.DateField(auto_now_add=True, null=True, blank=True)
-    comienzo = models.DateField(default=datetime.now, blank=True, null=True)
-    final = models.DateField(default=datetime.now, blank=True, null=True)
+    comienzo = models.DateField(default=datetime.date.today, blank=True, null=True)
+    final = models.DateField(default=datetime.date.today, blank=True, null=True)
     
     ESTADO = [
         ('PEDIDO', 'Pedido'),
@@ -45,12 +45,18 @@ class Reservation(models.Model):
         ('CANCELADO', 'Cancelado'),
     ]
     estado = models.CharField(max_length=10, choices=ESTADO, default='PEDIDO')
+    
+    class Meta:
+        verbose_name = "Reservacion"
+        verbose_name_plural = "Reservaciones"
 
     def __str__(self):
         return '{}, {}, {}'.format(self.comienzo, self.final, self.estado)
 
+    
+
 # Proxy de modelo Reservation para que el ComplejoAdmin pueda ver las reservaciones
-class ReservationProxy(Reservation):
+class ReservacionProxy(Reservacion):
     class Meta:
         proxy = True
 

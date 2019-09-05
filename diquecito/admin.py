@@ -7,7 +7,7 @@ from .models import *
 
 # Modelos de Admins
 
-class ReservationAdmin(admin.ModelAdmin):
+class ReservacionAdmin(admin.ModelAdmin):
 	# Orden de listado de datos
     list_display = ('creacion','comienzo','final','estado')
 
@@ -87,12 +87,12 @@ complejo_admin_site = ComplejoAdminSite(name='complejo_admin')
 
 ## Admin Site
 admin.site.register(Usuario)
-admin.site.register(Reservation)
+admin.site.register(Reservacion)
 admin.site.register(Post)
 admin.site.register(Qualification)
 
 ## Complejo Admin Site
-complejo_admin_site.register(ReservationProxy, ReservationAdmin)
+complejo_admin_site.register(ReservacionProxy, ReservacionAdmin)
 # A implementar a futuro
 '''
 complejo_admin_site.register(UsuarioProxy, UsuarioAdmin)

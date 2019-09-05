@@ -138,7 +138,8 @@ JWT_AUTH = {
 
 
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-ar'
+
 
 TIME_ZONE = 'UTC'
 

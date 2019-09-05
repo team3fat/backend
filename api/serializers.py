@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from diquecito.models import Usuario, Post, Reservation, Qualification
+from diquecito.models import Usuario, Post, Reservacion, Qualification
 
 import json
 
@@ -14,14 +14,14 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ('usuario_id', 'title', 'description')
 
-class ReservationSerializer(serializers.ModelSerializer):
+class ReservacionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Reservation
+        model = Reservacion
         fields = ('comienzo', 'final', 'estado')
 
 class CalendarioSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Reservation
+        model = Reservacion
         fields = ('comienzo', 'final', 'estado')
 
 class QualificationSerializer(serializers.ModelSerializer):
