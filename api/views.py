@@ -12,8 +12,8 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views import generic as generics
-from diquecito.models import Usuario, Post, Reservation, Qualification
-from .serializers import UsuarioSerializer, PostSerializer, ReservationSerializer, QualificationSerializer, CalendarioSerializer
+from diquecito.models import Usuario, Post, Reservacion, Qualification
+from .serializers import UsuarioSerializer, PostSerializer, ReservacionSerializer, QualificationSerializer, CalendarioSerializer
 from django_filters import rest_framework as filters
 from django.utils import timezone
 from datetime import datetime
@@ -56,9 +56,9 @@ class PostList(rest_generics.ListCreateAPIView):
 
 
     
-class ReservationList(rest_generics.ListCreateAPIView):
-    queryset = Reservation.objects.all()
-    serializer_class = ReservationSerializer
+class ReservacionList(rest_generics.ListCreateAPIView):
+    queryset = Reservacion.objects.all()
+    serializer_class = ReservacionSerializer
 
 
     def get_object(self):
@@ -72,7 +72,7 @@ class ReservationList(rest_generics.ListCreateAPIView):
 # View que devolvera la lista de reservaciones
 
 class Calendario(rest_generics.ListCreateAPIView):
-    queryset = Reservation.objects.all()
+    queryset = Reservacion.objects.all()
     serializer_class = CalendarioSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['$comienzo', '$final']
