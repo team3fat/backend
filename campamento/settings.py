@@ -156,3 +156,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CORS_ORIGIN_ALLOW_ALL=True
+
+# Configuracion email
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'diquecito.a@gmail.com'
+EMAIL_HOST_PASSWORD = 'Abcdel1al5@'
+EMAIL_PORT = 587

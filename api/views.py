@@ -21,6 +21,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 import django_filters.rest_framework
 from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 
 # Create your views here.
 
@@ -74,7 +75,7 @@ class ReservacionList(rest_generics.ListCreateAPIView):
     def mail(request):
         send_mail(
         'Pedido de reservacion',
-        'Un usuario a realizado un pedido de reserva desde el dia {comienzo} hasta {final}.',
+        'Un usuario a realizado un pedido de reserva desde el dia hasta.',
         'diquecito.a@gmail.com',
         ['tomy.monier@gmail.com'],
         fail_silently=False,
