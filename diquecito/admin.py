@@ -47,11 +47,12 @@ class ReservacionAdmin(admin.ModelAdmin):
     def aceptar_pedido(self, request, queryset):
     	# Anti solapamiento de reservas
         Range = namedtuple('Range', ['comienzo', 'final'])
+        puede = False
+        rows_updated = 0
 
         for reser in queryset:
             r1 = Range(comienzo=reser.comienzo, final=reser.final)
-
-            otras = Reservacion.objects.all()
+            otras = Reservacion.objects.all().filter(estado='RESERVADO')
 
             for r in otras:
                 r2 = Range(comienzo=r.comienzo, final=r.final)
@@ -59,20 +60,33 @@ class ReservacionAdmin(admin.ModelAdmin):
                 earliest_end = min(r1.final, r2.final)
 
                 delta = (earliest_end - latest_start).days + 1
-
                 overlap = max(0, delta)
+
                 if overlap <= 0:
-                    rows_updated = queryset.update(estado='RESERVADO')
-                    if rows_updated == 1:
-                        message_bit = "1 pedido de reservacion fue confirmado"
-                    else:
-                        message_bit = "%s pedidos de reservacion fueron confirmados" % rows_updated
-                    self.message_user(request, "%s" % message_bit)
+                    self.puede = True
+                    self.rows_updated += 1
+                    # Actualizar reserva a RESERVADO
                 else:
                     self.message_user(request, "Error: Esa fecha ya esta reservada, no se puede confirmar el pedido"
                     	, messages.ERROR)
-                    break
-			        # error: solapamiento de reservas        	
+                    # NO cambiar el estado
+
+            if self.puede:
+                pass
+                '''
+                rows_updated = queryset.update(estado='RESERVADO')
+                if rows_updated == 1:
+                    message_bit = "1 pedido de reservacion fue confirmado"
+                else:
+                    message_bit = "%s pedidos de reservacion fueron confirmados" % rows_updated
+                self.message_user(request, "%s" % message_bit)
+                '''
+
+        if rows_updated == 1:
+            message_bit = "1 pedido de reservacion fue confirmado"
+        else:
+            message_bit = "%s pedidos de reservacion fueron confirmados" % rows_updated
+        self.message_user(request, "%s" % message_bit)
 
         # Old
         '''
