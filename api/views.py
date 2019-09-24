@@ -22,6 +22,7 @@ from rest_framework import filters
 import django_filters.rest_framework
 from django.core.mail import send_mail
 from django.core.mail import EmailMessage
+from django.shortcuts import render
 
 # Create your views here.
 
@@ -30,6 +31,16 @@ from django.core.mail import EmailMessage
 def current_user(request):
     serializer = UsuarioSerializer(request.user)
     return Response(serializer.data)
+
+def mail(request):
+    send_mail(
+    'Pedido de reservacion',
+    'Un usuario a realizado un pedido de reserva.',
+    'diquecito.a@gmail.com',
+    ['mayas@mail-card.net'],
+    fail_silently=False)
+
+    return render(request, 'api/index.html')
 
 class UsuarioList(rest_generics.ListCreateAPIView):
     queryset = Usuario.objects.all()
@@ -72,14 +83,7 @@ class ReservacionList(rest_generics.ListCreateAPIView):
         )
         return obj
 
-    def mail(request):
-        send_mail(
-        'Pedido de reservacion',
-        'Un usuario a realizado un pedido de reserva desde el dia hasta.',
-        'diquecito.a@gmail.com',
-        ['tomy.monier@gmail.com'],
-        fail_silently=False,
-    )
+    
 
 # View que devolvera la lista de reservaciones
 
