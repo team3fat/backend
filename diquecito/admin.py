@@ -63,56 +63,26 @@ class ReservacionAdmin(admin.ModelAdmin):
                 overlap = max(0, delta)
 
                 if overlap <= 0:
-                    self.puede = True
-                    self.rows_updated += 1
+                    puede = True
+                    rows_updated += 1
                     # Actualizar reserva a RESERVADO
                 else:
+                    puede = False
                     self.message_user(request, "Error: Esa fecha ya esta reservada, no se puede confirmar el pedido"
                     	, messages.ERROR)
+                    break
                     # NO cambiar el estado
 
-            if self.puede:
-                pass
-                '''
-                rows_updated = queryset.update(estado='RESERVADO')
-                if rows_updated == 1:
-                    message_bit = "1 pedido de reservacion fue confirmado"
-                else:
-                    message_bit = "%s pedidos de reservacion fueron confirmados" % rows_updated
-                self.message_user(request, "%s" % message_bit)
-                '''
+            if puede:
+                Reservacion.objects.filter(pk=reser.pk).update(estado='RESERVADO')
+                
+        if puede:
+            if rows_updated == 1:
+                message_bit = "1 pedido de reservacion fue confirmado"
+            elif rows_updated > 1:
+                message_bit = "%s pedidos de reservacion fueron confirmados" % rows_updated
+            self.message_user(request, "%s" % message_bit)
 
-        if rows_updated == 1:
-            message_bit = "1 pedido de reservacion fue confirmado"
-        else:
-            message_bit = "%s pedidos de reservacion fueron confirmados" % rows_updated
-        self.message_user(request, "%s" % message_bit)
-
-        # Old
-        '''
-        r1 = Range(comienzo=queryset.value_list('comienzo', flat=True), final=queryset.value_list('final', flat=True))
-
-        otras = Reservacion.objects.values('comienzo', 'final')
-
-        for r in otras:
-            r2 = Range(comienzo=r.comienzo, final=r.final)
-            latest_start = max(r1.comienzo, r2.comienzo)
-            earliest_end = min(r1.final, r2.final)
-
-            delta = (earliest_end - latest_start).days + 1
-
-            overlap = max(0, delta)
-            if overlap <= 0:
-                rows_updated = queryset.update(estado='RESERVADO')
-                if rows_updated == 1:
-                    message_bit = "1 pedido de reservacion fue confirmado"
-                else:
-                    message_bit = "%s pedidos de reservacion fueron confirmados" % rows_updated
-                self.message_user(request, "%s" % message_bit)
-            else:
-                pass
-			    # error: solapamiento de reservas
-         '''
 
     # Permisos de acciones
     cancelar_pedido.allowed_permissions = ('change',)
