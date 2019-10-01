@@ -11,5 +11,4 @@ urlpatterns = [
     path('qualification/', QualificationList.as_view()),
     path('signup/', SignUp.as_view(), name='signup'),
     path('calendario/', Calendario.as_view(), name='calendario'),
-    path('mail/', views.ReservacionList.mail),
 ]
