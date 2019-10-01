@@ -159,7 +159,6 @@ CORS_ORIGIN_ALLOW_ALL=True
 
 # Configuracion email
 
-
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'diquecito.a@gmail.com'
 EMAIL_HOST_PASSWORD = 'Abcdel1al5@'

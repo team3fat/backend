@@ -29,5 +29,4 @@ urlpatterns = [
     path('diquecito/auth', include('rest_framework.urls', namespace="rest_framework")),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
-    path('mail/', include('api.urls')),
 ]
