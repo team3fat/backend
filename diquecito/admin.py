@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.contrib import admin
+from django.contrib import admin, messages
 
 from .models import *
+
+from collections import namedtuple
 
 # Modelos de Admins
 
@@ -43,12 +45,44 @@ class ReservacionAdmin(admin.ModelAdmin):
         self.message_user(request, "%s" % message_bit)
 
     def aceptar_pedido(self, request, queryset):
-        rows_updated = queryset.update(estado='RESERVADO')
-        if rows_updated == 1:
-            message_bit = "1 pedido de reservacion fue confirmado"
-        else:
-            message_bit = "%s pedidos de reservacion fueron confirmados" % rows_updated
-        self.message_user(request, "%s" % message_bit)
+    	# Anti solapamiento de reservas
+        Range = namedtuple('Range', ['comienzo', 'final'])
+        puede = False
+        rows_updated = 0
+
+        for reser in queryset:
+            r1 = Range(comienzo=reser.comienzo, final=reser.final)
+            otras = Reservacion.objects.all().filter(estado='RESERVADO')
+
+            for r in otras:
+                r2 = Range(comienzo=r.comienzo, final=r.final)
+                latest_start = max(r1.comienzo, r2.comienzo)
+                earliest_end = min(r1.final, r2.final)
+
+                delta = (earliest_end - latest_start).days + 1
+                overlap = max(0, delta)
+
+                if overlap <= 0:
+                    puede = True
+                    rows_updated += 1
+                    # Actualizar reserva a RESERVADO
+                else:
+                    puede = False
+                    self.message_user(request, "Error: Esa fecha ya esta reservada, no se puede confirmar el pedido"
+                    	, messages.ERROR)
+                    break
+                    # NO cambiar el estado
+
+            if puede:
+                Reservacion.objects.filter(pk=reser.pk).update(estado='RESERVADO')
+                
+        if puede:
+            if rows_updated == 1:
+                message_bit = "1 pedido de reservacion fue confirmado"
+            elif rows_updated > 1:
+                message_bit = "%s pedidos de reservacion fueron confirmados" % rows_updated
+            self.message_user(request, "%s" % message_bit)
+
 
     # Permisos de acciones
     cancelar_pedido.allowed_permissions = ('change',)
