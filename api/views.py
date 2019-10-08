@@ -20,6 +20,11 @@ from datetime import datetime
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 import django_filters.rest_framework
+from django.core.mail import send_mail
+from django.core.mail import EmailMessage
+from django.shortcuts import render
+
+from django.db.models.signals import post_save
 
 # Create your views here.
 
@@ -52,9 +57,6 @@ class PostList(rest_generics.ListCreateAPIView):
             pk=self.kwargs['pk'],
         )
         return obj
-
-
-
     
 class ReservacionList(rest_generics.ListCreateAPIView):
     queryset = Reservacion.objects.all()
@@ -68,6 +70,15 @@ class ReservacionList(rest_generics.ListCreateAPIView):
             pk=self.kwargs['pk'],
         )
         return obj
+
+def mail(sender, **kwargs):
+    send_mail('Pedido de reservacion',
+    'Un usuario a realizado un pedido de reserva.',
+    'diquecito.a@gmail.com',
+    ['wogofeso@mailr24.com'],
+    fail_silently=False) 
+
+post_save.connect(mail, sender=Reservacion)
 
 # View que devolvera la lista de reservaciones
 

@@ -1,5 +1,6 @@
 from django.urls import path
 from api.views import UsuarioList, PostList, ReservacionList, QualificationList, Login, TokenAuthentication, SignUp, Calendario
+from . import views
 
 urlpatterns = [
     path('usuario/', UsuarioList.as_view()),
