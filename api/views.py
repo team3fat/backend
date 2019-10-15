@@ -72,13 +72,15 @@ class ReservacionList(rest_generics.ListCreateAPIView):
         return obj
 
 def mail(sender, **kwargs):
+    
     send_mail('Pedido de reservacion',
-    'Un usuario a realizado un pedido de reserva.',
-    'diquecito.a@gmail.com',
-    ['wogofeso@mailr24.com'],
-    fail_silently=False) 
-
+    'Un usuario a realizado un pedido de reserva',
+    'wogofeso@mailr24.com',
+    ['diquecito.a@gmail.com'],
+    fail_silently=False)
+    
 post_save.connect(mail, sender=Reservacion)
+
 
 # View que devolvera la lista de reservaciones
 

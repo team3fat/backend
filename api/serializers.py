@@ -5,6 +5,7 @@ from diquecito.models import Usuario, Post, Reservacion, Qualification
 import json
 
 class UsuarioSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = Usuario
         fields = ('first_name', 'last_name', 'email', 'password')
