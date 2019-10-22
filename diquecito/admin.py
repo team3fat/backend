@@ -7,10 +7,7 @@ from .models import *
 from django.core.mail import send_mail
 from django.core.mail import EmailMessage
 from django.shortcuts import render
-from django.db.models.signals import post_delete
-from django.db.models.signals import post_save
-from django.db.models.signals import post_init
-from django.db.models.signals import pre_save
+
 
 # Modelos de Admins
 
@@ -49,6 +46,12 @@ class ReservacionAdmin(admin.ModelAdmin):
             message_bit = "%s reservaciones fueron canceladas" % rows_updated
         self.message_user(request, "%s" % message_bit)
 
+        send_mail('Pedido de reservacion Rechazado',
+        'Lamentamos informarle que su pedido de Reservacion del complejo Diquecito a sido rechazado para saber mas contactenos a este número 351 330-2070',
+        'diquecito.a@gmail.com',
+        ['doxejawe@ieasymail.net'],
+        fail_silently=False)
+
     def aceptar_pedido(self, request, queryset):
         rows_updated = queryset.update(estado='RESERVADO')
         if rows_updated == 1:
@@ -56,8 +59,11 @@ class ReservacionAdmin(admin.ModelAdmin):
         else:
             message_bit = "%s pedidos de reservacion fueron confirmados" % rows_updated
         self.message_user(request, "%s" % message_bit)
-
-        
+        send_mail('Pedido de reservacion aceptado',
+        'Su pedido de reservacion a sido aceptado, en los proximos dias lo contactaremos para acordar el precio, si tiene alguna pregunta puede comuncarse por whatsapp o facebook, Muchas Gracias',
+        'diquecito.a@gmail.com',
+        ['doxejawe@ieasymail.net'],
+        fail_silently=False)  
 
     # Permisos de acciones
     cancelar_pedido.allowed_permissions = ('change',)

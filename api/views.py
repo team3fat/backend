@@ -88,27 +88,6 @@ def mail(sender, **kwargs):
     
 post_save.connect(mail, sender=Reservacion)
 
-def rechamail(sender, **kwargs):
-    
-    send_mail('Pedido de reservacion Rechazado',
-    'Lamentamos informarle que su pedido de Reservacion del complejo Diquecito a sido rechazado para saber mas contactenos',
-    'diquecito.a@gmail.com',
-    ['doxejawe@ieasymail.net'],
-    fail_silently=False)
-    
-post_save.connect(rechamail, sender=ReservacionAdmin.cancelar_pedido)
-
-def aceptmail(sender, **kwargs):
-    
-    send_mail('Pedido de reservacion aceptado',
-    'Su pedido de reservacion a sido aceptado, en los proximos dias lo contactaremos para acordar el precio, si tiene alguna pregunta puede comuncarse por whatsapp o facebook, Muchas Gracias',
-    'diquecito.a@gmail.com',
-    ['doxejawe@ieasymail.net'],
-    fail_silently=False)  
-    
-post_save.connect(aceptmail, sender=ReservacionAdmin.aceptar_pedido)
-
-
 
 # View que devolvera la lista de reservaciones
 
