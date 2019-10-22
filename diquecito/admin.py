@@ -4,6 +4,13 @@ from __future__ import unicode_literals
 from django.contrib import admin
 
 from .models import *
+from django.core.mail import send_mail
+from django.core.mail import EmailMessage
+from django.shortcuts import render
+from django.db.models.signals import post_delete
+from django.db.models.signals import post_save
+from django.db.models.signals import post_init
+from django.db.models.signals import pre_save
 
 # Modelos de Admins
 
@@ -49,6 +56,8 @@ class ReservacionAdmin(admin.ModelAdmin):
         else:
             message_bit = "%s pedidos de reservacion fueron confirmados" % rows_updated
         self.message_user(request, "%s" % message_bit)
+
+        
 
     # Permisos de acciones
     cancelar_pedido.allowed_permissions = ('change',)

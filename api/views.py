@@ -20,6 +20,15 @@ from datetime import datetime
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 import django_filters.rest_framework
+from django.core.mail import send_mail
+from django.core.mail import EmailMessage
+from django.shortcuts import render
+from django.db.models.signals import post_delete
+from django.db.models.signals import post_save
+from django.db.models.signals import post_init
+from django.db.models.signals import pre_save
+from django.db.models.signals import m2m_changed
+from diquecito.admin import ReservacionAdmin
 
 # Create your views here.
 
@@ -28,6 +37,7 @@ import django_filters.rest_framework
 def current_user(request):
     serializer = UsuarioSerializer(request.user)
     return Response(serializer.data)
+
 
 class UsuarioList(rest_generics.ListCreateAPIView):
     queryset = Usuario.objects.all()
@@ -41,6 +51,8 @@ class UsuarioList(rest_generics.ListCreateAPIView):
         )
         return obj
 
+
+
 class PostList(rest_generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -52,9 +64,6 @@ class PostList(rest_generics.ListCreateAPIView):
             pk=self.kwargs['pk'],
         )
         return obj
-
-
-
     
 class ReservacionList(rest_generics.ListCreateAPIView):
     queryset = Reservacion.objects.all()
@@ -68,6 +77,38 @@ class ReservacionList(rest_generics.ListCreateAPIView):
             pk=self.kwargs['pk'],
         )
         return obj
+
+def mail(sender, **kwargs):
+    
+    send_mail('Pedido de reservacion',
+    'Un usuario a realizado un pedido de reserva',
+    'diquecito.a@gmail.com',
+    ['doxejawe@ieasymail.net'],
+    fail_silently=False)
+    
+post_save.connect(mail, sender=Reservacion)
+
+def rechamail(sender, **kwargs):
+    
+    send_mail('Pedido de reservacion Rechazado',
+    'Lamentamos informarle que su pedido de Reservacion del complejo Diquecito a sido rechazado para saber mas contactenos',
+    'diquecito.a@gmail.com',
+    ['doxejawe@ieasymail.net'],
+    fail_silently=False)
+    
+post_save.connect(rechamail, sender=ReservacionAdmin.cancelar_pedido)
+
+def aceptmail(sender, **kwargs):
+    
+    send_mail('Pedido de reservacion aceptado',
+    'Su pedido de reservacion a sido aceptado, en los proximos dias lo contactaremos para acordar el precio, si tiene alguna pregunta puede comuncarse por whatsapp o facebook, Muchas Gracias',
+    'diquecito.a@gmail.com',
+    ['doxejawe@ieasymail.net'],
+    fail_silently=False)  
+    
+post_save.connect(aceptmail, sender=ReservacionAdmin.aceptar_pedido)
+
+
 
 # View que devolvera la lista de reservaciones
 
