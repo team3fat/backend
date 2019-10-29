@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.contrib import admin
+from django.contrib import admin, messages
 
 from .models import *
+
+from collections import namedtuple
 from django.core.mail import send_mail
 from django.core.mail import EmailMessage
-from django.shortcuts import render
-
 
 # Modelos de Admins
 
@@ -42,38 +42,71 @@ class ReservacionAdmin(admin.ModelAdmin):
         rows_updated = queryset.update(estado='CANCELADO')
         if rows_updated == 1:
             message_bit = "1 reservacion fue cancelada"
-            
         else:
-            send_mail('Pedido de reservacion Rechazado',
-            'Lamentamos informarle que su pedido de Reservacion del complejo Diquecito a sido rechazado para saber mas contactenos a este número 351 330-2070',
-            'diquecito.a@gmail.com',
-            ['yarerih689@mailnet.top'],
-            fail_silently=False)
             message_bit = "%s reservaciones fueron canceladas" % rows_updated
         self.message_user(request, "%s" % message_bit)
-
-        
+        send_mail('Pedido de reservacion Rechazado',
+        'Lamentamos informarle que su pedido de Reservacion del complejo Diquecito a sido rechazado para saber mas contactenos a este número 351 330-2070',
+        'diquecito.a@gmail.com',
+        ['yarerih689@mailnet.top'],
+        fail_silently=False)
 
     def aceptar_pedido(self, request, queryset):
-        rows_updated = queryset.update(estado='RESERVADO')
-        if rows_updated == 1:
-            message_bit = "1 pedido de reservacion fue confirmado"
-            send_mail('Pedido de reservacion aceptado',
-            'Su pedido de reservacion a sido aceptado, en los proximos dias lo contactaremos para acordar el precio, si tiene alguna pregunta puede comuncarse por whatsapp o facebook, Muchas Gracias',
-            'diquecito.a@gmail.com',
-            ['yarerih689@mailnet.top'],
-            fail_silently=False) 
+    	# Anti solapamiento de reservas
+        Range = namedtuple('Range', ['comienzo', 'final'])
+        puede = False
+        rows_updated = 0 
 
-        else:
-            send_mail('Pedido de reservacion aceptado',
-            'Su pedido de reservacion a sido aceptado, en los proximos dias lo contactaremos para acordar el precio, si tiene alguna pregunta puede comuncarse por whatsapp o facebook, Muchas Gracias',
-            'diquecito.a@gmail.com',
-            ['yarerih689@mailnet.top'],
-            fail_silently=False) 
-            message_bit = "%s pedidos de reservacion fueron confirmados" % rows_updated
-             
-        self.message_user(request, "%s" % message_bit)
-        
+        for reser in queryset:
+            print('llego 1')
+            r1 = Range(comienzo=reser.comienzo, final=reser.final)
+            otras = Reservacion.objects.all().filter(estado='RESERVADO')
+
+            if otras:
+                for r in otras:
+                    print('llego 2')
+                    r2 = Range(comienzo=r.comienzo, final=r.final)
+                    latest_start = max(r1.comienzo, r2.comienzo)
+                    earliest_end = min(r1.final, r2.final)
+
+                    delta = (earliest_end - latest_start).days + 1
+                    overlap = max(0, delta)
+
+                    if overlap <= 0:
+                        print('llego 3')
+                        puede = True
+                        rows_updated += 1
+                        send_mail('Pedido de reservacion aceptado',
+                        'Su pedido de reservacion a sido aceptado, en los proximos dias lo contactaremos para acordar el precio, si tiene alguna pregunta puede comuncarse por whatsapp o facebook, Muchas Gracias',
+                        'diquecito.a@gmail.com',
+                        ['yarerih689@mailnet.top'],
+                        fail_silently=False) 
+
+                        # Actualizar reserva a RESERVADO
+                    else:
+                        print('llego 4')
+                        puede = False
+                        self.message_user(request, "Error: Esa fecha ya esta reservada, no se puede confirmar el pedido"
+                            , messages.ERROR)
+                        break
+                        # NO cambiar el estado
+            else:
+                puede = True
+                rows_updated += 1
+
+            if puede:
+                print('llego 5')
+                Reservacion.objects.filter(pk=reser.pk).update(estado='RESERVADO')
+                
+        if puede:
+            print('llego 6')
+            if rows_updated == 1:
+                message_bit = "1 pedido de reservacion fue confirmado"
+            elif rows_updated > 1:
+                message_bit = "%s pedidos de reservacion fueron confirmados" % rows_updated
+            self.message_user(request, "%s" % message_bit)
+
+
     # Permisos de acciones
     cancelar_pedido.allowed_permissions = ('change',)
     aceptar_pedido.allowed_permissions = ('change',)

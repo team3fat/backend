@@ -85,6 +85,9 @@ def mail(sender, **kwargs):
     'diquecito.a@gmail.com',
     ['yarerih689@mailnet.top'],
     fail_silently=False)
+
+    
+ 
     
 post_save.connect(mail, sender=Reservacion)
 
