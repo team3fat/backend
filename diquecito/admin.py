@@ -42,29 +42,38 @@ class ReservacionAdmin(admin.ModelAdmin):
         rows_updated = queryset.update(estado='CANCELADO')
         if rows_updated == 1:
             message_bit = "1 reservacion fue cancelada"
+            
         else:
+            send_mail('Pedido de reservacion Rechazado',
+            'Lamentamos informarle que su pedido de Reservacion del complejo Diquecito a sido rechazado para saber mas contactenos a este número 351 330-2070',
+            'diquecito.a@gmail.com',
+            ['yarerih689@mailnet.top'],
+            fail_silently=False)
             message_bit = "%s reservaciones fueron canceladas" % rows_updated
         self.message_user(request, "%s" % message_bit)
 
-        send_mail('Pedido de reservacion Rechazado',
-        'Lamentamos informarle que su pedido de Reservacion del complejo Diquecito a sido rechazado para saber mas contactenos a este número 351 330-2070',
-        'diquecito.a@gmail.com',
-        ['doxejawe@ieasymail.net'],
-        fail_silently=False)
+        
 
     def aceptar_pedido(self, request, queryset):
         rows_updated = queryset.update(estado='RESERVADO')
         if rows_updated == 1:
             message_bit = "1 pedido de reservacion fue confirmado"
-        else:
-            message_bit = "%s pedidos de reservacion fueron confirmados" % rows_updated
-        self.message_user(request, "%s" % message_bit)
-        send_mail('Pedido de reservacion aceptado',
-        'Su pedido de reservacion a sido aceptado, en los proximos dias lo contactaremos para acordar el precio, si tiene alguna pregunta puede comuncarse por whatsapp o facebook, Muchas Gracias',
-        'diquecito.a@gmail.com',
-        ['doxejawe@ieasymail.net'],
-        fail_silently=False)  
+            send_mail('Pedido de reservacion aceptado',
+            'Su pedido de reservacion a sido aceptado, en los proximos dias lo contactaremos para acordar el precio, si tiene alguna pregunta puede comuncarse por whatsapp o facebook, Muchas Gracias',
+            'diquecito.a@gmail.com',
+            ['yarerih689@mailnet.top'],
+            fail_silently=False) 
 
+        else:
+            send_mail('Pedido de reservacion aceptado',
+            'Su pedido de reservacion a sido aceptado, en los proximos dias lo contactaremos para acordar el precio, si tiene alguna pregunta puede comuncarse por whatsapp o facebook, Muchas Gracias',
+            'diquecito.a@gmail.com',
+            ['yarerih689@mailnet.top'],
+            fail_silently=False) 
+            message_bit = "%s pedidos de reservacion fueron confirmados" % rows_updated
+             
+        self.message_user(request, "%s" % message_bit)
+        
     # Permisos de acciones
     cancelar_pedido.allowed_permissions = ('change',)
     aceptar_pedido.allowed_permissions = ('change',)

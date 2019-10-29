@@ -79,11 +79,11 @@ class ReservacionList(rest_generics.ListCreateAPIView):
         return obj
 
 def mail(sender, **kwargs):
-    
+
     send_mail('Pedido de reservacion',
     'Un usuario a realizado un pedido de reserva',
     'diquecito.a@gmail.com',
-    ['doxejawe@ieasymail.net'],
+    ['yarerih689@mailnet.top'],
     fail_silently=False)
     
 post_save.connect(mail, sender=Reservacion)
