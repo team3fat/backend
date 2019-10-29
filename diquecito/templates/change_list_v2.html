@@ -1,0 +1,21 @@
+{% extends 'admin/change_list.html' %}
+
+{% block object-tools %}
+    <div>
+        <form action="aceptar/" method="POST">
+            {% csrf_token %}
+                <button type="submit">Aceptar Pedido</button>
+        </form>
+        <br>
+        <form action="cancelar/" method="POST">
+            {% csrf_token %}
+                <button type="submit">Cancelar Pedido</button>
+        </form>
+        <br>
+        <form action="resetear/" method="POST">
+            {% csrf_token %}
+                <button type="submit">Resetear Reserva</button>
+        </form>
+    </div>
+    <br>
+{% endblock %}

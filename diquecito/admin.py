@@ -7,9 +7,14 @@ from .models import *
 
 from collections import namedtuple
 
+from django.urls import path
+
 # Modelos de Admins
 
 class ReservacionAdmin(admin.ModelAdmin):
+    # change_list template
+    change_list_template = "change_list_v2.html"
+
 	# Orden de listado de datos
     list_display = ('creacion','comienzo','final','estado')
 
@@ -28,6 +33,16 @@ class ReservacionAdmin(admin.ModelAdmin):
     # Acciones de admin
     actions = ['cancelar_pedido','aceptar_pedido','resetear_pedido']
 
+    def get_urls(self):
+        urls = super().get_urls()
+        my_urls = [
+            path('resetar/', self.resetear_pedido),
+            path('cancelar/', self.cancelar_pedido),
+            path('aceptar/', self.aceptar_pedido),
+        ]
+
+        return my_urls + urls
+
     def resetear_pedido(self, request, queryset):
         rows_updated = queryset.update(estado='PEDIDO')
         if rows_updated == 1:
@@ -35,6 +50,7 @@ class ReservacionAdmin(admin.ModelAdmin):
         else:
             message_bit = "%s pedidos de reservaciones fueron reseteados" % rows_updated
         self.message_user(request, "%s" % message_bit)
+        return HttpResponseRedirect("../")
 
     def cancelar_pedido(self, request, queryset):
         rows_updated = queryset.update(estado='CANCELADO')
@@ -43,6 +59,7 @@ class ReservacionAdmin(admin.ModelAdmin):
         else:
             message_bit = "%s reservaciones fueron canceladas" % rows_updated
         self.message_user(request, "%s" % message_bit)
+        return HttpResponseRedirect("../")
 
     def aceptar_pedido(self, request, queryset):
     	# Anti solapamiento de reservas
@@ -92,6 +109,8 @@ class ReservacionAdmin(admin.ModelAdmin):
             elif rows_updated > 1:
                 message_bit = "%s pedidos de reservacion fueron confirmados" % rows_updated
             self.message_user(request, "%s" % message_bit)
+        
+        return HttpResponseRedirect("../")
 
 
     # Permisos de acciones
