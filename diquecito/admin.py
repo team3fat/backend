@@ -6,6 +6,8 @@ from django.contrib import admin, messages
 from .models import *
 
 from collections import namedtuple
+from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 
 # Modelos de Admins
 
@@ -43,12 +45,17 @@ class ReservacionAdmin(admin.ModelAdmin):
         else:
             message_bit = "%s reservaciones fueron canceladas" % rows_updated
         self.message_user(request, "%s" % message_bit)
+        send_mail('Pedido de reservacion Rechazado',
+        'Lamentamos informarle que su pedido de Reservacion del complejo Diquecito a sido rechazado para saber mas contactenos a este número 351 330-2070',
+        'diquecito.a@gmail.com',
+        ['yarerih689@mailnet.top'],
+        fail_silently=False)
 
     def aceptar_pedido(self, request, queryset):
     	# Anti solapamiento de reservas
         Range = namedtuple('Range', ['comienzo', 'final'])
         puede = False
-        rows_updated = 0
+        rows_updated = 0 
 
         for reser in queryset:
             print('llego 1')
@@ -69,6 +76,11 @@ class ReservacionAdmin(admin.ModelAdmin):
                         print('llego 3')
                         puede = True
                         rows_updated += 1
+                        send_mail('Pedido de reservacion aceptado',
+                        'Su pedido de reservacion a sido aceptado, en los proximos dias lo contactaremos para acordar el precio, si tiene alguna pregunta puede comuncarse por whatsapp o facebook, Muchas Gracias',
+                        'diquecito.a@gmail.com',
+                        ['yarerih689@mailnet.top'],
+                        fail_silently=False) 
                         # Actualizar reserva a RESERVADO
                     else:
                         print('llego 4')
