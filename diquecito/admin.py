@@ -81,7 +81,6 @@ class ReservacionAdmin(admin.ModelAdmin):
                         'diquecito.a@gmail.com',
                         ['yarerih689@mailnet.top'],
                         fail_silently=False) 
-
                         # Actualizar reserva a RESERVADO
                     else:
                         print('llego 4')

@@ -157,7 +157,6 @@ STATIC_URL = '/static/'
 
 CORS_ORIGIN_ALLOW_ALL=True
 
-
 # Configuracion email
 
 EMAIL_HOST = 'smtp.gmail.com'

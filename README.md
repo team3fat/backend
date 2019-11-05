@@ -51,6 +51,10 @@ Traemos la rama *master* a nuestro repositorio local
 Y entonces, localmente tendremos *master*, la version del producto oficial que ha sido testeada
 y aceptada para ser considerada valida de usar
 
+Tambien existe la rama *release*, la cual contiene versiones del producto. Se puede acceder a ella en el repositorio local mediante el siguiente comando
+
+`git checkout release`
+
 Si se quiere tener la version *develop* no estable en el repositorio local, entonces se tiene
 que correr
 

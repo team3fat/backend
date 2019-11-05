@@ -23,12 +23,8 @@ import django_filters.rest_framework
 from django.core.mail import send_mail
 from django.core.mail import EmailMessage
 from django.shortcuts import render
-from django.db.models.signals import post_delete
-from django.db.models.signals import post_save
-from django.db.models.signals import post_init
-from django.db.models.signals import pre_save
-from django.db.models.signals import m2m_changed
 from diquecito.admin import ReservacionAdmin
+from django.db.models.signals import post_save, post_delete, post_init, pre_save, m2m_changed
 
 # Create your views here.
 
@@ -79,19 +75,13 @@ class ReservacionList(rest_generics.ListCreateAPIView):
         return obj
 
 def mail(sender, **kwargs):
-
     send_mail('Pedido de reservacion',
     'Un usuario a realizado un pedido de reserva',
     'diquecito.a@gmail.com',
     ['yarerih689@mailnet.top'],
     fail_silently=False)
-
-    
- 
-    
+  
 post_save.connect(mail, sender=Reservacion)
-
-
 # View que devolvera la lista de reservaciones
 
 class Calendario(rest_generics.ListCreateAPIView):
