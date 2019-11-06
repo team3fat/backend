@@ -35,10 +35,11 @@ class ReservacionAdmin(admin.ModelAdmin):
 
     def get_urls(self):
         urls = super().get_urls()
+        """ queryset = super().get_queryset(request) """
         my_urls = [
-            path('resetar/', self.resetear_pedido),
-            path('cancelar/', self.cancelar_pedido),
-            path('aceptar/', self.aceptar_pedido),
+            path('resetar/', self.admin_site.admin_view(self.resetear_pedido)),
+            path('cancelar/', self.admin_site.admin_view(self.cancelar_pedido)),
+            path('aceptar/', self.admin_site.admin_view(self.aceptar_pedido)),
         ]
 
         return my_urls + urls
