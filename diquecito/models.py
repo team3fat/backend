@@ -38,6 +38,13 @@ class Reservacion(models.Model):
     creacion = models.DateField(auto_now_add=True, null=True, blank=True)
     comienzo = models.DateField(default=datetime.date.today, blank=True, null=True)
     final = models.DateField(default=datetime.date.today, blank=True, null=True)
+    nombre = models.CharField(max_length=15, blank=False, null=False)
+    apellido = models.CharField(max_length=20, blank=False, null=False)
+    telefono = models.CharField(max_length=15, blank=False, null=True)
+    email = models.EmailField(blank=False, null=False)
+    entidad = models.CharField(max_length=30, blank=False, null=True)
+    cant_personas = models.PositiveSmallIntegerField(blank=False, null=False)
+    consulta = models.TextField(blank=True, null=True)
     
     ESTADO = [
         ('PEDIDO', 'Pedido'),
@@ -51,7 +58,13 @@ class Reservacion(models.Model):
         verbose_name_plural = "Reservaciones"
 
     def __str__(self):
-        return '{}, {}, {}'.format(self.comienzo, self.final, self.estado)
+        return '{}, {}, {} - {}, {}'.format(
+            self.comienzo, 
+            self.final, 
+            self.estado, 
+            self.apellido, 
+            self.nombre
+        )
 
     
 
