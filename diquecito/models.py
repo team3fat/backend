@@ -40,9 +40,9 @@ class Reservacion(models.Model):
     final = models.DateField(default=datetime.date.today, blank=True, null=True)
     nombre = models.CharField(max_length=15, blank=False, null=False)
     apellido = models.CharField(max_length=20, blank=False, null=False)
-    telefono = models.CharField(max_length=15, blank=False, null=True)
+    telefono = models.CharField(max_length=15, blank=True, null=True)
     email = models.EmailField(blank=False, null=False)
-    entidad = models.CharField(max_length=30, blank=False, null=True)
+    entidad = models.CharField(max_length=30, blank=True, null=True)
     cant_personas = models.PositiveSmallIntegerField(blank=False, null=False)
     consulta = models.TextField(blank=True, null=True)
     
