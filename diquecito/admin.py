@@ -20,7 +20,24 @@ class ReservacionAdmin(admin.ModelAdmin):
 
     # FieldSets
     fieldsets = (
-        (None, {'fields': ('comienzo', 'final','estado')}),
+        (None, {
+            'fields': (
+                'comienzo',
+                'final',
+                'cant_personas',
+                'consulta',
+                'estado',
+            )
+        }),
+        ('Datos Usuario', {
+            'fields': (
+                'nombre',
+                'apellido',
+                'telefono',
+                'email',
+                'entidad',
+            )
+        }),
     )
 
     # Permisos de admin

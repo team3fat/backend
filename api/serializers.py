@@ -17,7 +17,18 @@ class PostSerializer(serializers.ModelSerializer):
 class ReservacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reservacion
-        fields = ('comienzo', 'final', 'estado')
+        fields = (
+            'comienzo', 
+            'final',
+            'nombre',
+            'apellido',
+            'telefono',
+            'email',
+            'entidad',
+            'cant_personas',
+            'consulta', 
+            'estado'
+        )
 
 class CalendarioSerializer(serializers.ModelSerializer):
     class Meta:
