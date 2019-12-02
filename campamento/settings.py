@@ -33,9 +33,9 @@ LOGOUT_REDIRECT_URL = 'home'
 SECRET_KEY = 'ttodno-a5xu#s@710#k*#=%8rj7$k0=2k#a#7j)6ol)0^+0*f1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
